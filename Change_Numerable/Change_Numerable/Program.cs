@@ -11,7 +11,7 @@ namespace Change_Numerable
     {
         static void Main(string[] args)
         {
-            foreach (var l in System.IO.File.ReadAllLines(@"..\..\Program.cs").Every2nd())
+            foreach (var l in System.IO.File.ReadAllLines(@"..\..\Program.cs").Every2nd(6))
             {
                 Console.WriteLine(l); 
             }
@@ -23,57 +23,25 @@ namespace Change_Numerable
     {
         public static IEnumerable<string> Every2nd(this IEnumerable<string> str)
         {
+            bool isFirst = true; 
+            foreach (var l in str)
+            {
+                if (isFirst) { yield return l; }
 
-            return str;
+                isFirst = !isFirst;
+            }
+        }
+        public static IEnumerable<string> Every2nd(this IEnumerable<string> str, int value)
+        {
+            int counter = 0; 
+            foreach(var l in str)
+            {
+                if (counter < value)
+                    yield return l;
+
+                counter++;
+            }
         }
     }
-    
-    class ExtenededEnumerable : IEnumerable<string>
-    {
-        private IEnumerator<string> str;
 
-        ExtenededEnumerable(IEnumerator<string> str)
-        {
-            this.str = str; 
-        }
-
-        public IEnumerator<string> GetEnumerator()
-        {
-            ExtendedEnumerator numerator = new ExtendedEnumerator(str); 
-            return numerator; 
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() //egal
-        {
-            throw new NotImplementedException();
-        }
-
-    }
-
-    class ExtendedEnumerator : IEnumerator<string>
-    {
-        public string Current => throw new NotImplementedException();
-
-        object IEnumerator.Current => throw new NotImplementedException();
-
-        public ExtendedEnumerator(IEnumerator<string> str)
-        {
-
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool MoveNext()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Reset()
-        {
-            throw new NotImplementedException();
-        }
-    }
 }
